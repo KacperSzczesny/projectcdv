@@ -12,7 +12,7 @@ System_Boundary(soil_monitoring_system, "Soil Moisture and Temperature Monitorin
     
     Container(websocket_service, "WebSocket Service", "Node.js/Socket.io", "Handles real-time data transmission and acts as intermediary for database access")
     
-    Container(database, "Database", "SQLite/InfluxDB", "Stores historical data from moisture and temperature measurements")
+    Container(database, "Database", "PostgreSQL", "Stores historical data from moisture and temperature measurements")
     
     Container(api_service, "API Service", "Python, Flask", "Provides measurement data through REST API")
 }

@@ -50,9 +50,9 @@ We're happy to introduce our soil moisture and temperature monitoring system. Th
    ```sh
    sudo raspi-config
    ```
-   *Go to Interfacing Options > 1-Wire and enable it.
+   * Go to Interfacing Options > 1-Wire and enable it.
    <br/>
-   *Restart Raspberry Pi:
+   * Restart Raspberry Pi:
    ```sh
    sudo reboot
    ```

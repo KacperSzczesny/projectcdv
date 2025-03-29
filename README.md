@@ -17,6 +17,8 @@ We're happy to introduce our soil moisture and temperature monitoring system. Th
 * Connecting wires
 
 
+## Connection
+
 
 ### DS18B20 (Soil Temperature Sensor)
 

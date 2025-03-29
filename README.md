@@ -51,11 +51,10 @@ We're happy to introduce our soil moisture and temperature monitoring system. Th
    sudo raspi-config
    ```
    * Go to Interfacing Options > 1-Wire and enable it.
-   <br/>
    * Restart Raspberry Pi:
-   ```sh
-   sudo reboot
-   ```
+      ```sh
+      sudo reboot
+      ```
 3. **Install Python libraries**
     ```sh
    sudo pip install smbus2 w1thermsensor

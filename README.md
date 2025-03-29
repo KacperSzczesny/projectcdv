@@ -1,4 +1,20 @@
-# CDV Project
-# Authors: Kacper SZCZĘSNY, Sebastian KRAWCZYK
+# CDV Project - Temperature and soil moisture measurement system
+## Authors: 
+Kacper SZCZĘSNY, 
+Sebastian KRAWCZYK
+<br/>
 
-We're happy to introduce our soil moisture monitoring system. This system is based on <strong>Raspberry Pi</strong> (3B+) and <strong>DHT22</strong> sensor. 
+## Description
+
+We're happy to introduce our soil moisture and temperature monitoring system. The system requires **Raspberry Pi** as a control unit (we used model 3B+ and two sensors: **DS18B20** (digital temperature sensor) and **Grove I2C** (to measure the soil moisture). Grove I2C is used to measure the soil mosture - it's been chosen because this one doesn't require an ADC (Analog-to-digital converter) and this means that we can avoid extra costs, extra cables and extra work. DS18B20 is used to measure the temperature. It can be connected by 1-Wire. The collected information can be sent to the cloud or a local database and visualized on a dashboard.
+
+## Components Used
+
+* Raspberry Pi 3B+ - Control unit
+* DS18B20 - Digital temperature sensor
+* Grove I2C Moisture Sensor - Capacitive soil moisture sensor (I2C)
+* 4.7kΩ Resistor (for DS18B20)
+* Connecting wires
+
+
+

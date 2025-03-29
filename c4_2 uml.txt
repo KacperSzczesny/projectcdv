@@ -1,0 +1,29 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+title [Container] Soil Moisture and Temperature Monitoring System
+footer Container diagram for the Soil Moisture and Temperature Monitoring System - generated with PlantUML\nMarch 2025
+
+Person(user, "System User", "Person monitoring soil parameters")
+
+System_Boundary(soil_monitoring_system, "Soil Moisture and Temperature Monitoring System") {
+    Container(web_app, "Web Application", "HTML, CSS and JavaScript", "Displays soil moisture and temperature data via web interface")
+    
+    Container(raspberry_pi, "Raspberry Pi 3B+", "Python, Linux", "Control unit, collects data from sensors")
+    
+    Container(websocket_service, "WebSocket Service", "Node.js/Socket.io", "Handles real-time data transmission and acts as intermediary for database access")
+    
+    Container(database, "Database", "SQLite/InfluxDB", "Stores historical data from moisture and temperature measurements")
+    
+    Container(api_service, "API Service", "Python, Flask", "Provides measurement data through REST API")
+}
+
+Rel(user, web_app, "Visits", "HTTPS")
+
+Rel(web_app, api_service, "Retrieves data via", "JSON/HTTPS")
+
+Rel(raspberry_pi, websocket_service, "Streams sensor data to", "WebSocket")
+
+Rel(websocket_service, database, "Stores measurement data in", "SQL/NoSQL")
+
+Rel(api_service, database, "Reads data from", "SQL/NoSQL")
+@enduml

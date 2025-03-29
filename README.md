@@ -18,3 +18,20 @@ We're happy to introduce our soil moisture and temperature monitoring system. Th
 
 
 
+### DS18B20 (Soil Temperature Sensor)
+
+| DS18B20 Sensor  | Raspberry Pi |
+|-----------------|--------------|
+| VCC             | 3.3V or 5V   |
+| GND             | GND          |
+| DATA            | GPIO4 (Pin 7)|
+| **4.7kΩ Resistor** | Between VCC and DATA |
+
+### Grove I2C Moisture Sensor (Soil Moisture Sensor)
+
+| Grove I2C Sensor | Raspberry Pi |
+|------------------|--------------|
+| VCC              | 3.3V         |
+| GND              | GND          |
+| SDA              | GPIO2 (Pin 3)|
+| SCL              | GPIO3 (Pin 5)|

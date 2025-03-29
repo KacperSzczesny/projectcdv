@@ -37,3 +37,37 @@ We're happy to introduce our soil moisture and temperature monitoring system. Th
 | GND              | GND          |
 | SDA              | GPIO2 (Pin 3)|
 | SCL              | GPIO3 (Pin 5)|
+
+
+## Installation
+
+1. **Update Raspberry Pi**
+   ```sh
+   sudo apt update && sudo apt upgrade -y
+   ```
+
+2. **Enable 1-Wire interface (for DS18B20)**
+   ```sh
+   sudo raspi-config
+   ```
+   *Go to Interfacing Options > 1-Wire and enable it.
+   <br/>
+   *Restart Raspberry Pi:
+   ```sh
+   sudo reboot
+   ```
+3. **Install Python libraries**
+    ```sh
+   sudo pip install smbus2 w1thermsensor
+    ```
+
+4. **Check connected sensors**
+
+    **DS18B20:**
+      ```sh
+      ls /sys/bus/w1/devices/
+      ```
+      **Grove I2C:**
+      ```sh
+      i2cdetect -y 1
+      ```

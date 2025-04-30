@@ -70,3 +70,15 @@ We're happy to introduce our soil moisture and temperature monitoring system. Th
       ```sh
       i2cdetect -y 1
       ```
+
+## Costs
+
+So, what we need to start with it?
+
+1. **Azure IoT Hub: For device-to-cloud communication.**
+2. **Azure Functions: To process incoming data.**
+3. **Azure Blob Storage: For storing sensor data.**
+4. **Azure Table Storage: For structured data storage.**
+5. **Azure Logic Apps: For automating workflows and notifications.​**
+
+EST: https://azure.com/e/13fb0a1878ac42a797cab7f895113f2f

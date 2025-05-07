@@ -81,4 +81,13 @@ So, what we need to start with it?
 4. **Azure Table Storage: For structured data storage.**
 5. **Azure Logic Apps: For automating workflows and notifications.​**
 
-EST: https://azure.com/e/13fb0a1878ac42a797cab7f895113f2f
+Estimated monthly cost: $11.86
+
+Why we chose these options?
+
+1. **IoT Hub** (Free/Basic tier) – Ideal for low-frequency sensor data; scalable later.
+2. **Functions** – Serverless logic with cost per execution; it means that no idle charges.
+3. **Blob Storage** (Hot/Standard) – Stores frequent sensor readings at low cost.
+4. **Table Storage** – it's just efficient, enough and (it's important in small projects like this) **cheap** for time-series data like temperature logs.
+5. **Logic Apps** – we configured it with low daily execution limits to stay cheap.
+

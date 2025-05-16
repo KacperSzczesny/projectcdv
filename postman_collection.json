@@ -10,7 +10,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/api/sensor",
+          "raw": ,
           "protocol": "http",
           "host": ["localhost"],
           "port": "3000",

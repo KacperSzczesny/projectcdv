@@ -1,0 +1,22 @@
+{
+  "info": {
+    "name": "IoT Project API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Sensor Data",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/sensor",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "sensor"]
+        }
+      }
+    }
+  ]
+}

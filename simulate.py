@@ -21,4 +21,4 @@ def send_data():
 if __name__ == "__main__":
     while True:
         send_data()
-        time.sleep(10)  # wysyła co 10 sekund
+        time.sleep(10)  

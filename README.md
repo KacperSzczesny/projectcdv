@@ -71,6 +71,35 @@ We're happy to introduce our soil moisture and temperature monitoring system. Th
       i2cdetect -y 1
       ```
 
+5. Install git
+      ```sh
+      apt install git 
+      ```
+
+6. Clone the repository
+      ```sh
+      git clone https://github.com/KacperSzczesny/projectcdv
+      ```
+7. Install backend dependencies
+      ```sh
+      sudo apt update && apt upgrade -y
+      sudo apt-get install python3-pip
+      pip install Flask
+      pip install -r requirements.txt
+      ```
+8. Start the backend server
+      ```sh
+      python3 app.py
+      ```
+
+# IF YOU WANT TO TEST THIS SCRIPT WITHOUT DEVICE, RUN VIRTUAL ENVIRONMENT
+**Type below commands after step 7**
+```sh
+   python3 -m venv venv
+   source venv/bin/activate
+   python3 app.py
+```
+
 ## Costs
 
 So, what we need to start with it?

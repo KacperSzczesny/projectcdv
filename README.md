@@ -38,6 +38,27 @@ We're happy to introduce our soil moisture and temperature monitoring system. Th
 | SDA              | GPIO2 (Pin 3)|
 | SCL              | GPIO3 (Pin 5)|
 
+## Costs
+
+So, what we need to start with it?
+
+1. **Azure IoT Hub: For device-to-cloud communication.**
+2. **Azure Functions: To process incoming data.**
+3. **Azure Blob Storage: For storing sensor data.**
+4. **Azure Table Storage: For structured data storage.**
+5. **Azure Logic Apps: For automating workflows and notifications.​**
+
+Estimated monthly cost: $11.86
+
+Why we chose these options?
+
+1. **IoT Hub** (Free/Basic tier) – Ideal for low-frequency sensor data; scalable later.
+2. **Functions** – Serverless logic with cost per execution; it means that no idle charges.
+3. **Blob Storage** (Hot/Standard) – Stores frequent sensor readings at low cost.
+4. **Table Storage** – it's just efficient, enough and (it's important in small projects like this) **cheap** for time-series data like temperature logs.
+5. **Logic Apps** – we configured it with low daily execution limits to stay cheap.
+
+
 
 ## Installation
 
@@ -99,24 +120,4 @@ We're happy to introduce our soil moisture and temperature monitoring system. Th
    source venv/bin/activate
    python3 app.py
 ```
-
-## Costs
-
-So, what we need to start with it?
-
-1. **Azure IoT Hub: For device-to-cloud communication.**
-2. **Azure Functions: To process incoming data.**
-3. **Azure Blob Storage: For storing sensor data.**
-4. **Azure Table Storage: For structured data storage.**
-5. **Azure Logic Apps: For automating workflows and notifications.​**
-
-Estimated monthly cost: $11.86
-
-Why we chose these options?
-
-1. **IoT Hub** (Free/Basic tier) – Ideal for low-frequency sensor data; scalable later.
-2. **Functions** – Serverless logic with cost per execution; it means that no idle charges.
-3. **Blob Storage** (Hot/Standard) – Stores frequent sensor readings at low cost.
-4. **Table Storage** – it's just efficient, enough and (it's important in small projects like this) **cheap** for time-series data like temperature logs.
-5. **Logic Apps** – we configured it with low daily execution limits to stay cheap.
 

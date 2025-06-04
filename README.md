@@ -110,6 +110,13 @@ Why we chose these options?
       ```
 8. Create an .env file - edit a name of "env file" to ".env", edit the file (fill it with your Azure's data). 
    It's for your safety - you don't have to worry about your Azure's data because it will be in the other than app.py file!
+      ```
+      AZURE_BLOB_CONN_STR=CONNECTION_STRING_FROM_AZURE
+      AZURE_TABLE_CONN_STR=CONNECTION_STRING_FROM_AZURE
+      BLOB_CONTAINER=sensordata
+      TABLE_NAME=readings
+      ```
+
 
 9. Start the backend server
       ```sh

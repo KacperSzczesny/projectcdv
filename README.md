@@ -108,7 +108,10 @@ Why we chose these options?
       pip install Flask
       pip install -r requirements.txt
       ```
-8. Start the backend server
+8. Create an .env file - edit a name of "env file" to ".env", edit the file (fill it with your Azure's data). 
+   It's for your safety - you don't have to worry about your Azure's data because it will be in the other than app.py file!
+
+9. Start the backend server
       ```sh
       python3 app.py
       ```

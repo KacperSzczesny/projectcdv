@@ -68,7 +68,7 @@ Why we chose these options?
   - sends data to Azure Table Storage (structural)
 * Azure Logic App analyzes data and sending e-mails,if humidity < 300
 
-Additionally, local sensor data can be accessed via the /readings endpoint.
+Additionally, local sensor data can be accessed via the `/readings` endpoint.
 
 
 ## Installation
@@ -138,3 +138,5 @@ Additionally, local sensor data can be accessed via the /readings endpoint.
       curl -X POST http://127.0.0.1:5000/sensor-data -H "Content-Type: application/json" -d "{\"temperature\": 18.7, \"humidity\": 60}"
    ```
 
+![c4_1](https://github.com/user-attachments/assets/763734ff-d317-41a0-8303-a97b3f52e80f)
+![c4_2](https://github.com/user-attachments/assets/c0757764-b14f-45c9-9a4c-ce4e009beb91)

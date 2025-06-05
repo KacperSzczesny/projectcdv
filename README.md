@@ -58,6 +58,17 @@ Why we chose these options?
 4. **Table Storage** – it's just efficient, enough and (it's important in small projects like this) **cheap** for time-series data like temperature logs.
 5. **Logic Apps** – we configured it with low daily execution limits to stay cheap.
 
+## System Architecture
+
+* Raspberry Pi 3B+ reads data from sensors (DS18B20 + Grove I2C Moisture)
+* POST sends data to Flask server
+* Serwer:
+  - saves data to SQLite database
+  - sends data to Azure Blob Storage (JSON)
+  - sends data to Azure Table Storage (structural)
+* Azure Logic App analyzes data and sending e-mails,if humidity < 300
+
+Additionally, local sensor data can be accessed via the /readings endpoint.
 
 
 ## Installation
@@ -122,12 +133,8 @@ Why we chose these options?
       ```sh
       python3 app.py
       ```
-
-# IF YOU WANT TO TEST THIS SCRIPT WITHOUT DEVICE, RUN VIRTUAL ENVIRONMENT
-**Type below commands after step 7**
-```sh
-   python3 -m venv venv
-   source venv/bin/activate
-   python3 app.py
-```
+10. Test endpoints via postman or:
+   ```
+      curl -X POST http://127.0.0.1:5000/sensor-data -H "Content-Type: application/json" -d "{\"temperature\": 18.7, \"humidity\": 60}"
+   ```
 

@@ -5,6 +5,10 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 import json
+##DB ! ! !
+import sqlite3
+from datetime import datetime, timezone
+timestamp = datetime.now(timezone.utc).isoformat()
 
 # .env - dane azure w innym pliku
 load_dotenv()
@@ -24,12 +28,38 @@ blob_container = blob_service.get_container_client(BLOB_CONTAINER)
 table_service = TableServiceClient.from_connection_string(AZURE_TABLE_CONN_STR)
 table_client = table_service.get_table_client(TABLE_NAME)
 
+## DB
+
+def init_db():
+    conn = sqlite3.connect("soil_data.db")
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS readings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT,
+            temperature REAL,
+            humidity INTEGER
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+def save_to_db(temperature, humidity):
+    conn = sqlite3.connect("soil_data.db")
+    cursor = conn.cursor()
+    timestamp = datetime.now(timezone.utc).isoformat()
+    cursor.execute("INSERT INTO readings (timestamp, temperature, humidity) VALUES (?, ?, ?)",
+                   (timestamp, temperature, humidity))
+    conn.commit()
+    conn.close()
+
+
 @app.route('/sensor-data', methods=['POST'])
 def receive_data():
     data = request.get_json()
     temperature = data.get("temperature")
     humidity = data.get("humidity")
-    timestamp = datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%S")
 
     print(f"\n📥 Otrzymano dane:")
     print(f"🌡️ Temperatura: {temperature}°C")
@@ -52,11 +82,35 @@ def receive_data():
     table_client.upsert_entity(entity=entity, mode=UpdateMode.MERGE)
     print("✅ Zapisano do Table Storage.")
 
-    # 3. Alert, jeśli wilgotność < 300
+    # 3. Zapis do bazy SQLite
+    save_to_db(temperature, humidity)
+    print(f"Zapisano w bazie: Temperatura={temperature:.2f}°C, Wilgotność={humidity}")
+
+    # 4. Alert, jeśli wilgotność < 300
     if humidity < 300:
         print("⚠️ ALERT: Wilgotność poniżej 300!")
 
     return jsonify({"status": "OK"}), 200
 
+#dashboard
+@app.route('/readings', methods=['GET'])
+def get_readings():
+    conn = sqlite3.connect("soil_data.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT timestamp, temperature, humidity FROM readings ORDER BY timestamp DESC LIMIT 10")
+    rows = cursor.fetchall()
+    conn.close()
+    
+    readings = [{"timestamp": r[0], "temperature": r[1], "humidity": r[2]} for r in rows]
+    return jsonify(readings)
+
+
 if __name__ == '__main__':
+    init_db()
+    app.run(debug=True)
+
+
+if __name__ == '__main__':
+    init_db()
+    print("✅ Baza SQLite została zainicjalizowana.")
     app.run(debug=True)

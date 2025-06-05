@@ -130,13 +130,13 @@ Additionally, local sensor data can be accessed via the `/readings` endpoint.
 
 
 9. Start the backend server
-      ```sh
+    ```sh
       python3 app.py
-      ```
+    ```
 10. Test endpoints via postman or:
-   ```
-      curl -X POST http://127.0.0.1:5000/sensor-data -H "Content-Type: application/json" -d "{\"temperature\": 18.7, \"humidity\": 60}"
-   ```
+    ```
+        curl -X POST http://127.0.0.1:5000/sensor-data -H "Content-Type: application/json" -d "{\"temperature\": 18.7, \"humidity\": 60}"
+    ```
 
 ## C4 Model
 

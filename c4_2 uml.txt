@@ -12,7 +12,7 @@ System_Boundary(soil_monitoring_system, "Soil Moisture and Temperature Monitorin
     
     Container(websocket_service, "WebSocket Service", "Node.js/Socket.io", "Handles real-time data transmission and acts as intermediary for database access")
     
-    Container(database, "Database", "PostgreSQL", "Stores historical data from moisture and temperature measurements")
+    Container(database, "Database", "SQLite", "Stores historical data from moisture and temperature measurements")
     
     Container(api_service, "API Service", "Python, Flask", "Provides measurement data through REST API")
 }
@@ -23,7 +23,7 @@ Rel(web_app, api_service, "Retrieves data via", "JSON/HTTPS")
 
 Rel(raspberry_pi, websocket_service, "Streams sensor data to", "WebSocket")
 
-Rel(websocket_service, database, "Stores measurement data in", "SQL/NoSQL")
+Rel(websocket_service, database, "Stores measurement data in", "SQLite")
 
-Rel(api_service, database, "Reads data from", "SQL/NoSQL")
+Rel(api_service, database, "Reads data from", "SQLite")
 @enduml

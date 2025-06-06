@@ -140,5 +140,6 @@ Additionally, local sensor data can be accessed via the `/readings` endpoint.
 
 ## C4 Model
 
-![c4_1](https://github.com/user-attachments/assets/763734ff-d317-41a0-8303-a97b3f52e80f)  
+
+![c4_1](https://github.com/user-attachments/assets/7e8a3f88-8cf3-4abc-bb26-8b2ef7bf4572)
 ![c4_2](https://github.com/user-attachments/assets/6145d0d0-1a99-43b5-bbe4-3ad854a264dc)

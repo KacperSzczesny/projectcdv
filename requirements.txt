@@ -1,0 +1,8 @@
+azure-storage-blob
+azure-data-tables 
+python-dotenv
+pytz
+python-dateutil
+Flask
+sqlite3
+requests

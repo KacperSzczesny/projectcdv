@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoring Gleby</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .dashboard {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .latest {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: #e6f7ff;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      width: 40%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background: #1890ff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>System Monitoringu Gleby</h1>
+  <div class="dashboard">
+    <div class="latest">
+      <div class="card">
+        <h2>Temperatura</h2>
+        <p id="latest-temperature">-- °C</p>
+      </div>
+      <div class="card">
+        <h2>Wilgotność</h2>
+        <p id="latest-moisture">-- %</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Czas</th>
+          <th>Temperatura (°C)</th>
+          <th>Wilgotność (%)</th>
+        </tr>
+      </thead>
+      <tbody id="data-table-body">
+        <!-- Wiersze zostaną uzupełnione przez JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    async function fetchData() {
+      const response = await fetch('/data');
+      const data = await response.json();
+      
+      const tableBody = document.getElementById('data-table-body');
+      tableBody.innerHTML = '';
+
+      if (data.length > 0) {
+        const latest = data[data.length - 1];
+        document.getElementById('latest-temperature').textContent = latest.temperature + ' °C';
+        document.getElementById('latest-moisture').textContent = latest.moisture + ' %';
+      }
+
+      data.reverse().forEach(entry => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${entry.timestamp}</td>
+          <td>${entry.temperature}</td>
+          <td>${entry.moisture}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    fetchData();
+    setInterval(fetchData, 5000); // aktualizuj dane co 5 sekund
+  </script>
+</body>
+</html>

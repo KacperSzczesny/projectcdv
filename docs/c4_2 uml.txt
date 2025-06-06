@@ -1,29 +1,29 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 title [Container] Soil Moisture and Temperature Monitoring System
-footer Container diagram for the Soil Moisture and Temperature Monitoring System - generated with PlantUML\nMarch 2025
+footer Container diagram for the Soil Moisture and Temperature Monitoring System - Updated June 2025
 
-Person(user, "System User", "Person monitoring soil parameters")
+Person(user, "System User", "Person monitoring soil parameters via browser")
 
-System_Boundary(soil_monitoring_system, "Soil Moisture and Temperature Monitoring System") {
-    Container(web_app, "Web Application", "HTML, CSS and JavaScript", "Displays soil moisture and temperature data via web interface")
-    
-    Container(raspberry_pi, "Raspberry Pi 3B+", "Python, Linux", "Control unit, collects data from sensors")
-    
-    Container(websocket_service, "WebSocket Service", "Node.js/Socket.io", "Handles real-time data transmission and acts as intermediary for database access")
-    
-    Container(database, "Database", "SQLite", "Stores historical data from moisture and temperature measurements")
-    
-    Container(api_service, "API Service", "Python, Flask", "Provides measurement data through REST API")
+System_Boundary(system, "Soil Moisture and Temperature Monitoring System") {
+
+    Container(raspberry_pi, "Raspberry Pi 3B+", "Python", "Collects data from DS18B20 (temperature) and Grove I2C Moisture Sensor and sends it to the backend")
+
+    Container(api_service, "Flask Backend", "Python (Flask)", "Receives sensor data via HTTP POST and stores it in Azure Blob, Azure Table Storage, and local SQLite. Also provides /readings endpoint for the dashboard.")
+
+    Container(database, "SQLite Database", "SQLite", "Stores historical soil temperature and moisture readings locally")
+
+    Container(blob_storage, "Azure Blob Storage", "Azure", "Stores raw sensor data as JSON files")
+
+    Container(table_storage, "Azure Table Storage", "Azure", "Stores structured, timestamped sensor records")
+
+    Container(web_app, "Dashboard (index.html)", "HTML, CSS, JavaScript", "Displays latest sensor data using REST API via /readings")
 }
 
-Rel(user, web_app, "Visits", "HTTPS")
-
-Rel(web_app, api_service, "Retrieves data via", "JSON/HTTPS")
-
-Rel(raspberry_pi, websocket_service, "Streams sensor data to", "WebSocket")
-
-Rel(websocket_service, database, "Stores measurement data in", "SQLite")
-
-Rel(api_service, database, "Reads data from", "SQLite")
+Rel(user, web_app, "Opens dashboard", "HTTP")
+Rel(web_app, api_service, "Fetches data via /readings", "HTTP GET")
+Rel(raspberry_pi, api_service, "Sends sensor data", "HTTP POST")
+Rel(api_service, database, "Stores & reads data", "SQLite")
+Rel(api_service, blob_storage, "Uploads raw sensor files", "Azure SDK")
+Rel(api_service, table_storage, "Upserts structured entries", "Azure SDK")
 @enduml

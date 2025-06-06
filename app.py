@@ -1,14 +1,14 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from azure.storage.blob import BlobServiceClient
 from azure.data.tables import TableServiceClient, UpdateMode
-from datetime import datetime
+from datetime import datetime, timezone
+datetime.now(timezone.utc).strftime("%Y%m%d, %H%M")
+from dateutil import parser
 import os
 from dotenv import load_dotenv
 import json
-##DB ! ! !
 import sqlite3
-from datetime import datetime, timezone
-timestamp = datetime.now(timezone.utc).isoformat()
+import pytz
 
 # .env - dane azure w innym pliku
 load_dotenv()
@@ -39,15 +39,14 @@ def init_db():
             timestamp TEXT,
             temperature REAL,
             humidity INTEGER
-        )
-    ''')
+        )'''
+    )
     conn.commit()
     conn.close()
 
-def save_to_db(temperature, humidity):
+def save_to_db(temperature, humidity, timestamp):
     conn = sqlite3.connect("soil_data.db")
     cursor = conn.cursor()
-    timestamp = datetime.now(timezone.utc).isoformat()
     cursor.execute("INSERT INTO readings (timestamp, temperature, humidity) VALUES (?, ?, ?)",
                    (timestamp, temperature, humidity))
     conn.commit()
@@ -59,40 +58,47 @@ def receive_data():
     data = request.get_json()
     temperature = data.get("temperature")
     humidity = data.get("humidity")
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%S")
+
+    #Polska strefa czasowa (dla czytelnego wyświetlania)
+    poland_tz = pytz.timezone('Europe/Warsaw')
+    local_timestamp = datetime.now(poland_tz).strftime("%Y-%m-%d, %H:%M")
+
+    utc_rowkey = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
 
     print(f"\n📥 Otrzymano dane:")
     print(f"🌡️ Temperatura: {temperature}°C")
     print(f"💧 Wilgotność: {humidity}")
-    print(f"⏱️  Czas: {timestamp}")
+    print(f"⏱️  Czas lokalny (PL): {local_timestamp}")
 
-    # 1. Zapisz do Azure Blob
-    blob_name = f"reading-{timestamp}.json"
+    #Zapisz do Azure Blob
+    blob_name = f"reading-{utc_rowkey}.json"
     blob_content = json.dumps(data)
     blob_container.upload_blob(name=blob_name, data=blob_content, overwrite=True)
     print(f"✅ Zapisano do Blob: {blob_name}")
 
-    # 2. Zapisz do Azure Table
+    #Zapisz do Azure Table Storage
     entity = {
         "PartitionKey": "sensor1",
-        "RowKey": timestamp,
+        "RowKey": utc_rowkey,
         "temperature": temperature,
-        "humidity": humidity
+        "humidity": humidity,
+        "timestamp": local_timestamp
     }
     table_client.upsert_entity(entity=entity, mode=UpdateMode.MERGE)
     print("✅ Zapisano do Table Storage.")
 
-    # 3. Zapis do bazy SQLite
-    save_to_db(temperature, humidity)
-    print(f"Zapisano w bazie: Temperatura={temperature:.2f}°C, Wilgotność={humidity}")
+    #Zapis do SQLite
+    save_to_db(temperature, humidity, local_timestamp)
+    print(f"💾 Zapisano do lokalnej bazy danych.")
 
-    # 4. Alert, jeśli wilgotność < 300
-    if humidity < 300:
-        print("⚠️ ALERT: Wilgotność poniżej 300!")
+    # 🔔 Alert, jeśli wilgotność < 20
+    if humidity < 20:
+        print("⚠️ ALERT: Wilgotność poniżej 20!")
 
     return jsonify({"status": "OK"}), 200
 
 #dashboard
+
 @app.route('/readings', methods=['GET'])
 def get_readings():
     conn = sqlite3.connect("soil_data.db")
@@ -100,10 +106,29 @@ def get_readings():
     cursor.execute("SELECT timestamp, temperature, humidity FROM readings ORDER BY timestamp DESC LIMIT 10")
     rows = cursor.fetchall()
     conn.close()
-    
-    readings = [{"timestamp": r[0], "temperature": r[1], "humidity": r[2]} for r in rows]
+
+    poland_tz = pytz.timezone('Europe/Warsaw')
+
+    readings = []
+    for r in rows:
+        try:
+            parsed_time = parser.parse(r[0])
+            local_time = parsed_time.astimezone(poland_tz).strftime("%Y-%m-%d, %H:%M")
+        except:
+            local_time = r[0]
+
+        readings.append({
+            "timestamp": local_time,
+            "temperature": r[1],
+            "humidity": r[2]
+        })
+
     return jsonify(readings)
 
+
+@app.route('/')
+def dashboard():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     init_db()

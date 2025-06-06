@@ -3,14 +3,14 @@
 
 title "System Context Diagram - Soil Moisture and Temperature Monitoring System"
 
-Person(user, "User", "A person who monitors soil conditions")
+Person(user, "User", "Person monitoring and managing the system")
 
-System(monitoring_system, "Soil Moisture and Temperature Monitoring System", "Collects, analyzes, and presents soil temperature and moisture data")
+System(monitoring_system, "Soil Moisture and Temperature Monitoring System", "Receives sensor data from Raspberry Pi, stores it in Azure and SQLite, and exposes it via web dashboard")
 
-System_Ext(cloud_service, "Cloud Service - Microsoft Azure", "External system for storing and processing data")
+System_Ext(cloud_service, "Microsoft Azure", "Cloud storage and processing (Blob, Table, Logic Apps)")
 
-Rel(user, monitoring_system, "Views data and configures system")
-Rel(monitoring_system, user, "Provides historical data and alerts")
-Rel(monitoring_system, cloud_service, "Stores and processes data")
-Rel(cloud_service, monitoring_system, "Provides data storage and processing capabilities")
+Rel(user, monitoring_system, "Views dashboard and receives alerts")
+Rel(monitoring_system, user, "Displays sensor history and warnings")
+Rel(monitoring_system, cloud_service, "Saves JSON and structured data")
+Rel(cloud_service, monitoring_system, "Provides storage and automation workflows")
 @enduml

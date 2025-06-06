@@ -126,6 +126,7 @@ Additionally, local sensor data can be accessed via the `/readings` endpoint.
       AZURE_TABLE_CONN_STR=CONNECTION_STRING_FROM_AZURE
       BLOB_CONTAINER=sensordata
       TABLE_NAME=readings
+      API_URL=http://localhost:5000/sensor-data
       ```
 
 

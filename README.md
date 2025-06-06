@@ -116,7 +116,6 @@ Additionally, local sensor data can be accessed via the `/readings` endpoint.
       ```sh
       sudo apt update && apt upgrade -y
       sudo apt-get install python3-pip
-      pip install Flask
       pip install -r requirements.txt
       ```
 8. Create an .env file - edit a name of "env file" to ".env", edit the file (fill it with your Azure's data). 

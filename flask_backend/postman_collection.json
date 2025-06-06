@@ -1,0 +1,61 @@
+{
+  "info": {
+    "name": "Flask Backend API",
+    "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
+    "description": "Kolekcja do testowania prostego Flask backendu",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Hello GET",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/hello",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "hello"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Echo POST",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{
+  "test": "data"
+}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/echo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "echo"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

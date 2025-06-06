@@ -1,0 +1,16 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title "System Context Diagram - Soil Moisture and Temperature Monitoring System"
+
+Person(user, "User", "A person who monitors soil conditions")
+
+System(monitoring_system, "Soil Moisture and Temperature Monitoring System", "Collects, analyzes, and presents soil temperature and moisture data")
+
+System_Ext(cloud_service, "Cloud Service - Microsoft Azure", "External system for storing and processing data")
+
+Rel(user, monitoring_system, "Views data and configures system")
+Rel(monitoring_system, user, "Provides historical data and alerts")
+Rel(monitoring_system, cloud_service, "Stores and processes data")
+Rel(cloud_service, monitoring_system, "Provides data storage and processing capabilities")
+@enduml

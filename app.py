@@ -33,11 +33,11 @@ table_client = table_service.get_table_client(TABLE_NAME)
     conn = sqlite3.connect("soil_data.db")
     cursor = conn.cursor()
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS readings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT,
-            temperature REAL,
-            humidity INTEGER
+            #CREATE TABLE IF NOT EXISTS readings (
+            #id INTEGER PRIMARY KEY AUTOINCREMENT,
+            #timestamp TEXT,
+            #temperature REAL,
+            #humidity INTEGER
         )'''
     )
     conn.commit()

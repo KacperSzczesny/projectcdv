@@ -3,7 +3,7 @@ import random
 import time
 import os
 
-API_URL = os.getenv("API_URL", "http://localhost:5000/sensor-data")
+API_URL = os.getenv("API_URL", "https://apppy-bxdgheajcefybzcu.westeurope-01.azurewebsites.net/sensor-data")
 
 def generate_sensor_data():
     temperature = round(random.uniform(15.0, 30.0), 2)

@@ -100,7 +100,7 @@ def receive_data():
     return jsonify({"status": "OK"}), 200
 
 #dashboard
-
+'''
 @app.route('/readings', methods=['GET'])
 def get_readings():
     conn = sqlite3.connect("soil_data.db")
@@ -125,7 +125,13 @@ def get_readings():
             "humidity": r[2]
         })
 
-    return jsonify(readings)
+    return jsonify(readings) '''
+
+#testowy   
+@app.route("/readings", methods=["GET"])
+    def get_readings():
+        print("GET /readings received")
+        return jsonify([])  # tymczasowo pusta lista
 
 
 @app.route('/')

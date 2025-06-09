@@ -4,5 +4,4 @@ python-dotenv
 pytz
 python-dateutil
 Flask
-sqlite3
 requests

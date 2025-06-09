@@ -44,13 +44,15 @@ def init_db():
     conn.commit()
     conn.close()
 
-def save_to_db(temperature, humidity, timestamp):
+'''
+    def save_to_db(temperature, humidity, timestamp):
     conn = sqlite3.connect("soil_data.db")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO readings (timestamp, temperature, humidity) VALUES (?, ?, ?)",
                    (timestamp, temperature, humidity))
     conn.commit()
-    conn.close()
+    conn.close() 
+'''
 
 
 @app.route('/sensor-data', methods=['POST'])

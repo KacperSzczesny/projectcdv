@@ -1,10 +1,10 @@
-&lt;!DOCTYPE html&gt;
-&amp;lt;html lang=&quot;pl&quot;&amp;gt;
-&amp;lt;head&amp;gt;
-  &amp;lt;meta charset=&quot;UTF-8&quot; /&amp;gt;
-  &amp;lt;meta name=&quot;viewport&quot; c initial-scale=1.0&quot; /&amp;gt;
-  &amp;lt;title&amp;gt;Monitoring Gleby&amp;lt;/title&amp;gt;
-  &amp;lt;style&amp;gt;
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoring Gleby</title>
+  <style>
     body {
       font-family: Arial, sans-serif;
       background: #f0f2f5;
@@ -48,56 +48,56 @@
       background: #1890ff;
       color: white;
     }
-  &amp;lt;/style&amp;gt;
-&amp;lt;/head&amp;gt;
-&amp;lt;body&amp;gt;
-  &lt;h1&gt;System Monitoringu Gleby&lt;/h1&gt;
-  &lt;div class=&quot;dashboard&quot;&gt;
-    &lt;div class=&quot;latest&quot;&gt;
-      &lt;div class=&quot;card&quot;&gt;
-        &lt;h2&gt;Temperatura&lt;/h2&gt;
-        &lt;p id=&quot;latest-temperature&quot;&gt;-- °C&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class=&quot;card&quot;&gt;
-        &lt;h2&gt;Wilgotność&lt;/h2&gt;
-        &lt;p id=&quot;latest-moisture&quot;&gt;-- %&lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+  </style>
+</head>
+<body>
+  <h1>System Monitoringu Gleby</h1>
+  <div class="dashboard">
+    <div class="latest">
+      <div class="card">
+        <h2>Temperatura</h2>
+        <p id="latest-temperature">-- °C</p>
+      </div>
+      <div class="card">
+        <h2>Wilgotność</h2>
+        <p id="latest-moisture">-- %</p>
+      </div>
+    </div>
 
-    &lt;table&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th&gt;Czas&lt;/th&gt;
-          &lt;th&gt;Temperatura (°C)&lt;/th&gt;
-          &lt;th&gt;Wilgotność (%)&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody id=&quot;data-table-body&quot;&gt;
-        &amp;lt;!-- Wiersze zostaną uzupełnione przez JS --&amp;gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/div&gt;
+    <table>
+      <thead>
+        <tr>
+          <th>Czas</th>
+          <th>Temperatura (°C)</th>
+          <th>Wilgotność (%)</th>
+        </tr>
+      </thead>
+      <tbody id="data-table-body">
+        <!-- Wiersze zostaną uzupełnione przez JS -->
+      </tbody>
+    </table>
+  </div>
 
-  [removed]
+  <script>
     async function fetchData() {
       const response = await fetch('/readings');
       const data = await response.json();
       
       const tableBody = document.getElementById('data-table-body');
-      tableBody[removed] = '';
+      tableBody.innerHTML = '';
 
-      if (data.length &gt; 0) {
+      if (data.length > 0) {
         const latest = data[data.length - 1];
         document.getElementById('latest-temperature').textContent = latest.temperature + ' °C';
         document.getElementById('latest-moisture').textContent = latest.humidity + ' %';
       }
 
-      data.reverse().forEach(entry =&gt; {
+      data.reverse().forEach(entry => {
         const row = document.createElement('tr');
-        row[removed] = `
-          &lt;td&gt;${entry.timestamp}&lt;/td&gt;
-          &lt;td&gt;${entry.temperature}&lt;/td&gt;
-          &lt;td&gt;${entry.humidity}&lt;/td&gt;
+        row.innerHTML = `
+          <td>${entry.timestamp}</td>
+          <td>${entry.temperature}</td>
+          <td>${entry.humidity}</td>
         `;
         tableBody.appendChild(row);
       });
@@ -105,7 +105,6 @@
 
     fetchData();
     setInterval(fetchData, 5000); // aktualizuj dane co 5 sekund
-  [removed]
-&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-
+  </script>
+</body>
+</html>

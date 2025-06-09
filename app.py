@@ -7,7 +7,6 @@ from dateutil import parser
 import os
 from dotenv import load_dotenv
 import json
-import sqlite3
 import pytz
 
 # .env - dane azure w innym pliku
@@ -30,7 +29,7 @@ table_client = table_service.get_table_client(TABLE_NAME)
 
 ## DB
 
-def init_db():
+''' def init_db():
     conn = sqlite3.connect("soil_data.db")
     cursor = conn.cursor()
     cursor.execute('''
@@ -44,16 +43,14 @@ def init_db():
     conn.commit()
     conn.close()
 
-'''
-    def save_to_db(temperature, humidity, timestamp):
+def save_to_db(temperature, humidity, timestamp):
     conn = sqlite3.connect("soil_data.db")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO readings (timestamp, temperature, humidity) VALUES (?, ?, ?)",
                    (timestamp, temperature, humidity))
     conn.commit()
-    conn.close() 
+    conn.close()
 '''
-
 
 @app.route('/sensor-data', methods=['POST'])
 def receive_data():
@@ -84,40 +81,40 @@ def receive_data():
         "RowKey": utc_rowkey,
         "temperature": temperature,
         "humidity": humidity,
-        "timestamp": local_timestamp
+        "timestamp": local_timestamp  # czytelna wersja
     }
     table_client.upsert_entity(entity=entity, mode=UpdateMode.MERGE)
     print("✅ Zapisano do Table Storage.")
 
     #Zapis do SQLite
-    save_to_db(temperature, humidity, local_timestamp)
-    print(f"💾 Zapisano do lokalnej bazy danych.")
+#    save_to_db(temperature, humidity, local_timestamp)
+#    print(f"💾 Zapisano do lokalnej bazy danych.")
 
-    # 🔔 Alert, jeśli wilgotność < 20
-    if humidity < 20:
-        print("⚠️ ALERT: Wilgotność poniżej 20!")
+    # 🔔 Alert, jeśli wilgotność < 50
+    if humidity < 50:
+        print("⚠️ ALERT: Wilgotność poniżej 50!")
 
     return jsonify({"status": "OK"}), 200
 
 #dashboard
-'''
-@app.route('/readings', methods=['GET'])
+
+@app.route("/readings", methods=["GET"])
 def get_readings():
-    conn = sqlite3.connect("soil_data.db")
-    cursor = conn.cursor()
-    cursor.execute("SELECT timestamp, temperature, humidity FROM readings ORDER BY timestamp DESC LIMIT 10")
-    rows = cursor.fetchall()
-    conn.close()
+    print("GET /readings received")
+    entities = table_client.query_entities("PartitionKey eq 'sensor1'")
+    sorted_entities = sorted(entities, key=lambda x: x["RowKey"], reverse=True)
+    recent = sorted_entities[:10]
 
     poland_tz = pytz.timezone('Europe/Warsaw')
 
     readings = []
     for r in rows:
+        
         try:
             parsed_time = parser.parse(r[0])
             local_time = parsed_time.astimezone(poland_tz).strftime("%Y-%m-%d, %H:%M")
         except:
-            local_time = r[0]
+            local_time = r[0] 
 
         readings.append({
             "timestamp": local_time,
@@ -125,13 +122,12 @@ def get_readings():
             "humidity": r[2]
         })
 
-    return jsonify(readings) '''
-
-#testowy   
-@app.route("/readings", methods=["GET"])
+    return jsonify(readings)
+    
+'''    @app.route("/readings", methods=["GET"])
     def get_readings():
         print("GET /readings received")
-        return jsonify([])  # tymczasowo pusta lista
+        return jsonify([])  # tymczasowo pusta lista '''
 
 
 @app.route('/')
